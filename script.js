@@ -1,6 +1,6 @@
 var world = [
   [2,2,2,2,2,2,2,2,2,2],
-  [2,1,1,1,2,1,1,1,1,2],
+  [2,0,1,1,2,1,1,1,1,2],
   [2,1,1,1,2,1,1,2,1,2],
   [2,1,1,1,2,1,1,2,1,2],
   [2,1,1,1,2,2,2,2,1,2],
@@ -13,6 +13,12 @@ var pacman = {
   x: 1,
   y: 1
 }
+
+var ghost = {
+  x: 1,
+  y: 1
+}
+
 
 function displayWorld() {
   var output = "";
@@ -41,18 +47,59 @@ function displayPacman() {
 displayPacman()
 displayWorld()
 
+
+function pacmanRotate(deg) {
+  document.getElementById("pacman").style.rotate = deg + "deg"
+}
+
+function posCheck(dir) {
+
+  switch (dir) {
+    case "ArrowUp":
+      if (pacman.y > 0 && world[pacman.y - 1][pacman.x] !== 2) {
+        return true
+      }
+      break;
+    case "ArrowDown":
+      if (pacman.y < 8 && world[pacman.y + 1][pacman.x] !== 2) {
+        return true
+      }
+      break;
+    case "ArrowLeft":
+      if (pacman.x > 0 && world[pacman.y][pacman.x - 1] !== 2) {
+        return true
+      }
+      break;
+    case "ArrowRight":
+      if (pacman.x < 9 && world[pacman.y][pacman.x + 1] !== 2) {
+        return true
+      }
+      break;
+
+    default:
+      return false;
+  }
+
+  world[pacman.y - 1][pacman.x] !== 2
+}
+
+
 document.onkeydown = function (e) {
-  if (e.key == "ArrowUp" && pacman.y > 0) {
+  if (e.key == "ArrowUp" && posCheck(e.key)) {
+    pacmanRotate(270)
     pacman.y -= 1;
   }
-  else if (e.key == "ArrowDown" && pacman.y < 8) {
+  else if (e.key == "ArrowDown" && posCheck(e.key)) {
+    pacmanRotate(90)
     pacman.y += 1;
   }
-  else if (e.key == "ArrowLeft"  && pacman.x > 0) {
+  else if (e.key == "ArrowLeft" && posCheck(e.key)) {
     pacman.x -= 1;
+    pacmanRotate(180)
   }
-  else if (e.key == "ArrowRight" && pacman.x < 9) {
+  else if (e.key == "ArrowRight" && posCheck(e.key)) {
     pacman.x += 1;
+    pacmanRotate(0)
   }
 
   if (world[pacman.y][pacman.x] == 1) {
@@ -60,9 +107,6 @@ document.onkeydown = function (e) {
   }
 
 
-
-
-  console.log(pacman);
   displayPacman()
   displayWorld()
 }
