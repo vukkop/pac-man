@@ -19,9 +19,76 @@ var world = [
   [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 ]
 
-function randomGenMap() {
+function createBoard(x, y) {
+  let board = [];
+  let cherries = 0;
+  let ghosts = 0;
+  for (let i = 0; i <= x; i++) {
+    let row = [];
+    for (var j = 0; j <= y; j++) {
+      // top and bottom row check
+      if (i === 0 || i === x) {
+        row.push(2);
+      } else if (j === 0 || j === y) {
+        // this would be the far left and right columns
+        row.push(2);
+      } else {
+        // we can choose a random tile now.  We can also create a new function with rules for tiles
+        while (!checkCell(board, i, j)) {
+          let newCell = randomCell(ghosts, cherries);
+          if (newCell === 3) {
+            cherries++;
+          }
+          if (newCell === 4) {
+            ghosts++;
+          }
+        }
 
+      }
+    }
+    board.push(row)
+  }
+  return board;
 }
+
+
+function randomCell(ghosts, cherries) {
+  let choices = [1, 2, 3, 4];
+  if (ghosts > 1) {
+    choices.pop(4);
+  }
+  if (cherries > 3) {
+    choices.pop(3);
+  }
+  let random = Math.floor(Math.random() * choices.length);
+  return choices[random];
+}
+
+function checkCell(board, i, j) {
+  // if we are in the top row or on an edge, return true
+  if (i === 0 || i === board.length - 1 || j === 0 || j === board[i].length - 1) {
+    return true;
+  }
+  // if we are in the middle, check if we are touching 2 or more walls and return false
+  let walls = 0;
+  if (board[i - 1][j] === 2) {
+    walls++;
+  }
+  if (board[i + 1][j] === 2) {
+    walls++;
+  }
+  if (board[i][j - 1] === 2) {
+    walls++;
+  }
+  if (board[i][j + 1] === 2) {
+    walls++;
+  }
+  if (walls >= 2) {
+    return false;
+  }
+  return true;
+};
+
 
 var pacman = {
   x: 1,
@@ -73,6 +140,7 @@ displayGhost()
 displayPacman()
 displayWorld()
 
+console.log(createBoard(10, 20));
 
 function pacmanRotate(deg) {
   document.getElementById("pacman").style.rotate = deg + "deg"
