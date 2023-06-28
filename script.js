@@ -1,13 +1,25 @@
 var world = [
-  [2,2,2,2,2,2,2,2,2,2],
-  [2,0,1,1,2,1,1,1,1,2],
-  [2,1,1,1,2,1,1,2,1,2],
-  [2,1,1,1,2,1,1,2,1,2],
-  [2,1,1,1,2,2,2,2,1,2],
-  [2,1,1,1,1,1,1,1,1,2],
-  [2,1,1,1,1,1,1,1,1,2],
-  [2,1,1,1,1,1,1,1,1,2],
-  [2,2,2,2,2,2,2,2,2,2],
+  [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+  [2,0,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,3,2],
+  [2,1,2,2,2,1,2,2,1,2,2,1,2,2,1,2,2,2,1,2],
+  [2,1,2,1,1,3,1,1,1,1,1,1,1,1,3,1,1,2,1,2],
+  [2,1,2,2,2,1,2,2,2,2,2,2,2,2,1,2,2,2,1,2],
+  [2,1,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,2],
+  [2,1,2,2,2,1,2,2,1,2,2,1,2,2,1,2,2,2,1,2],
+  [2,1,2,1,1,1,2,1,1,1,1,1,1,2,1,1,1,2,1,2],
+  [2,1,2,1,2,1,2,1,2,2,2,2,1,2,1,2,1,2,1,2],
+  [2,1,2,1,2,1,1,1,2,0,0,0,1,1,1,2,1,2,1,2],
+  [2,1,2,1,2,2,2,1,2,0,0,2,1,2,2,2,1,2,1,2],
+  [2,1,1,3,1,1,1,1,2,2,2,2,1,1,1,1,3,1,1,2],
+  [2,1,2,1,2,2,2,1,1,1,1,1,1,2,2,2,1,2,1,2],
+  [2,1,2,1,2,1,1,1,2,2,2,2,1,1,1,2,1,2,1,2],
+  [2,1,2,1,2,1,2,1,2,2,2,2,1,2,1,2,1,2,1,2],
+  [2,1,1,1,1,3,2,1,1,1,1,1,1,2,3,1,1,1,1,2],
+  [2,1,2,2,2,1,2,1,2,2,2,2,1,2,1,2,2,2,1,2],
+  [2,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,2],
+  [2,1,2,2,2,1,2,1,2,2,2,2,1,2,1,2,2,2,1,2],
+  [2,3,1,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1,3,2],
+  [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
 ]
 var pacman = {
   x: 1,
@@ -15,10 +27,9 @@ var pacman = {
 }
 
 var ghost = {
-  x: 1,
-  y: 1
+  x: 9,
+  y: 9
 }
-
 
 function displayWorld() {
   var output = "";
@@ -29,6 +40,8 @@ function displayWorld() {
         output += "<div class='brick'></div>"
       } else if (world[i][j] == 1) {
         output += "<div class='coin'></div>"
+      }else if (world[i][j] == 3) {
+        output += "<div class='cherry'></div>"
       }
       if (world[i][j] == 0) {
         output += "<div class='empty'></div>"
@@ -43,9 +56,14 @@ function displayPacman() {
   document.getElementById("pacman").style.top = pacman.y *25 + 2 +"px"
   document.getElementById("pacman").style.left = pacman.x *25 + 2 +"px"
 }
+function displayGhost() {
+  document.getElementById("ghost").style.top = ghost.y *25 + 2 +"px"
+  document.getElementById("ghost").style.left = ghost.x *25 + 2 +"px"
+}
 
-displayPacman()
 displayWorld()
+displayPacman()
+displayGhost()
 
 
 function pacmanRotate(deg) {
@@ -61,7 +79,7 @@ function posCheck(dir) {
       }
       break;
     case "ArrowDown":
-      if (pacman.y < 8 && world[pacman.y + 1][pacman.x] !== 2) {
+      if (pacman.y < 19 && world[pacman.y + 1][pacman.x] !== 2) {
         return true
       }
       break;
@@ -71,7 +89,7 @@ function posCheck(dir) {
       }
       break;
     case "ArrowRight":
-      if (pacman.x < 9 && world[pacman.y][pacman.x + 1] !== 2) {
+      if (pacman.x < 18 && world[pacman.y][pacman.x + 1] !== 2) {
         return true
       }
       break;
@@ -104,6 +122,8 @@ document.onkeydown = function (e) {
 
   if (world[pacman.y][pacman.x] == 1) {
     world[pacman.y][pacman.x] = 0;
+  } else if (world[pacman.y][pacman.x] == 3){
+      world[pacman.y][pacman.x] = 0;
   }
 
 
