@@ -36,8 +36,8 @@ var pacman = {
 }
 
 var ghost = {
-  x: 9,
-  y: 9
+  x: 8,
+  y: 8
 }
 
 function displayWorld() {
