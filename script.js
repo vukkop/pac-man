@@ -28,6 +28,7 @@ var world = [
   [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 ];
 sadasd;
+dasdasdasd;
 var pacman = {
   x: 1,
   y: 1,
